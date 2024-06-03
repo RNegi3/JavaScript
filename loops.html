@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random String Generator Game</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    #random-string {
+        margin-bottom: 20px;
+    }
+    #input-container {
+        text-align: center;
+    }
+    input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div id="random-string"></div>
+<div id="input-container">
+    <input type="text" id="user-input" placeholder="Enter your guess">
+    <button onclick="checkGuess()">Submit</button>
+</div>
+<br>
+<button onclick="startGame()">Start</button>
+<button onclick="resetGame()">Reset</button>
+
+<script>
+let generatedString;
+let timer;
+
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+function startGame() {
+    clearInterval(timer); // Reset timer
+    generatedString = generateRandomString(12);
+    document.getElementById('random-string').textContent = generatedString;
+    timer = setTimeout(hideString, 20000); // Hide string after 20 seconds
+}
+
+function hideString() {
+    document.getElementById('random-string').textContent = ''; // Hide generated string
+    showInput(); // Show input container
+}
+
+function showInput() {
+    document.getElementById('input-container').style.display = 'block'; // Show input container
+}
+
+function resetGame() {
+    clearInterval(timer);
+    document.getElementById('random-string').textContent = '';
+    document.getElementById('input-container').style.display = 'none';
+    document.getElementById('user-input').value = '';
+}
+
+function checkGuess() {
+    const userInput = document.getElementById('user-input').value;
+    let correctCount = 0;
+    for (let i = 0; i < generatedString.length; i++) {
+        if (generatedString[i] === userInput[i]) {
+            correctCount++;
+        }
+    }
+    alert(`You got ${correctCount} characters correct.`);
+    document.getElementById('random-string').textContent = generatedString; // Reveal the generated string
+}
+</script>
+
+</body>
+</html>
